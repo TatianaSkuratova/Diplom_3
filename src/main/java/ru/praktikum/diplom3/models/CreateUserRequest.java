@@ -1,5 +1,7 @@
 package ru.praktikum.diplom3.models;
+
 import lombok.Data;
+
 @Data
 public class CreateUserRequest {
     String email;
@@ -7,24 +9,29 @@ public class CreateUserRequest {
     String name;
 
 
-    public static class Builder{
+    public static class Builder {
         private CreateUserRequest newUserRequest;
-        public Builder(){
+
+        public Builder() {
             newUserRequest = new CreateUserRequest();
         }
-        public Builder email(String email){
+
+        public Builder email(String email) {
             newUserRequest.email = email;
             return this;
         }
-        public Builder password(String password){
+
+        public Builder password(String password) {
             newUserRequest.password = password;
             return this;
         }
-        public Builder name(String name){
+
+        public Builder name(String name) {
             newUserRequest.name = name;
             return this;
         }
-        public CreateUserRequest build(){
+
+        public CreateUserRequest build() {
             return newUserRequest;
         }
     }

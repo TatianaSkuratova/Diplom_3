@@ -1,4 +1,3 @@
-import io.qameta.allure.Step;
 import io.qameta.allure.junit4.DisplayName;
 import org.junit.After;
 import org.junit.Before;
@@ -13,14 +12,15 @@ import ru.praktikum.diplom3.pageobject.PersonalAccountPage;
 
 import static org.junit.Assert.assertTrue;
 
-public class PersonalAccountTest extends BaseTest{
-    MainPage mainPage;
-    CreateUserRequest createUserRequest;
-    UserApiClient userApiClient;
-    CreateUserResponse createUserResponse;
-    LoginPage loginPage;
+public class PersonalAccountTest extends BaseTest {
+    private MainPage mainPage;
+    private CreateUserRequest createUserRequest;
+    private UserApiClient userApiClient;
+    private CreateUserResponse createUserResponse;
+    private LoginPage loginPage;
+
     @Before
-    public void init(){
+    public void init() {
         mainPage = new MainPage(webDriver);
         loginPage = new LoginPage(webDriver);
         createUserRequest = CreateUserRequestGenerator.getRandomUser();
@@ -30,7 +30,7 @@ public class PersonalAccountTest extends BaseTest{
 
     @Test
     @DisplayName("Проверка перехода по клику в личный кабинет")
-    public void clickPersonalAccountIsDisplayed(){
+    public void clickPersonalAccountIsDisplayed() {
         LoginPage loginPage = mainPage.clickButtonLoginToAccount();
         PersonalAccountPage personalAccountPage = getPersonalAccountPage(loginPage);
         loginPage = personalAccountPage.clickToButtonExit();
@@ -39,7 +39,7 @@ public class PersonalAccountTest extends BaseTest{
 
     @Test
     @DisplayName("Проверка перехода из личного кабинета в конструктор")
-    public void fromPersonalAccountToConstructor(){
+    public void fromPersonalAccountToConstructor() {
         loginPage = mainPage.clickButtonPersonalAccount();
         PersonalAccountPage personalAccountPage = getPersonalAccountPage(loginPage);
         assertTrue(mainPage.clickButtonConstructor().isEnabledLabelCreateBurger());
@@ -47,23 +47,25 @@ public class PersonalAccountTest extends BaseTest{
 
     @Test
     @DisplayName("Проверка перехода из личного кабинета в конструктор при нажатии на логотип")
-    public void fromPersonalAccountToLogo(){
+    public void fromPersonalAccountToLogo() {
         loginPage = mainPage.clickButtonPersonalAccount();
         PersonalAccountPage personalAccountPage = getPersonalAccountPage(loginPage);
         assertTrue(mainPage.clickImageLogo().isEnabledLabelCreateBurger());
+
     }
-    @Step
+
     @DisplayName("Вход в личный кабинет")
-    public PersonalAccountPage getPersonalAccountPage(LoginPage loginPage){
+    public PersonalAccountPage getPersonalAccountPage(LoginPage loginPage) {
         mainPage = loginPage
                 .sendKeysInputEmail(createUserRequest.getEmail())
                 .sendKeysInputPassword(createUserRequest.getPassword())
                 .clickOnButtonLogin();
         return mainPage.clickButtonAuthPersonalAccount();
     }
+
     @After
     @DisplayName("Удаление созданного пользователя")
-    public void deleteUser(){
+    public void deleteUser() {
         userApiClient.deleteUser(createUserResponse.getAccessToken());
     }
 }

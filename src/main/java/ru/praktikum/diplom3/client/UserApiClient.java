@@ -1,5 +1,6 @@
 package ru.praktikum.diplom3.client;
 
+import io.qameta.allure.Step;
 import io.restassured.response.Response;
 import ru.praktikum.diplom3.models.CreateUserRequest;
 import ru.praktikum.diplom3.models.LoginUserRequest;
@@ -7,25 +8,29 @@ import ru.praktikum.diplom3.models.LoginUserRequest;
 import static ru.praktikum.diplom3.config.AppConfig.*;
 
 public class UserApiClient extends BaseApiClient {
+    @Step("Создание пользователя")
     public Response createUser(CreateUserRequest createUserRequest) {
         return getPostSpec()
                 .body(createUserRequest)
                 .when()
-                .post(BURGER_URL + REGISTER_URL);
+                .post(REGISTER_URL);
     }
 
-    public Response deleteUser (String bearerToken){
+    @Step("Удаление пользователя")
+    public Response deleteUser(String bearerToken) {
         return getPostSpec()
                 .headers(
                         "Authorization",
                         bearerToken)
-                .delete(BURGER_URL + USER_URL);
+                .delete(USER_URL);
     }
 
-    public Response loginUser (LoginUserRequest loginUserRequest){
+
+    @Step("Авторизация пользователя")
+    public Response loginUser(LoginUserRequest loginUserRequest) {
         return getPostSpec()
                 .body(loginUserRequest)
                 .when()
-                .post(BURGER_URL + LOGIN_USER_URL);
+                .post(LOGIN_USER_URL);
     }
 }

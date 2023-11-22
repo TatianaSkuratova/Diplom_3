@@ -1,9 +1,12 @@
 package ru.praktikum.diplom3.helper;
+
+import io.qameta.allure.Step;
 import net.datafaker.Faker;
 import ru.praktikum.diplom3.models.CreateUserRequest;
 
 public class CreateUserRequestGenerator {
-    public static CreateUserRequest getRandomUser(){
+    @Step("Создание произвольного пользователя")
+    public static CreateUserRequest getRandomUser() {
         Faker faker = new Faker();
         String email = faker.internet().emailAddress();
         String password = faker.internet().password();

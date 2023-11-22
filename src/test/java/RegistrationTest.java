@@ -1,4 +1,3 @@
-import io.qameta.allure.Step;
 import io.qameta.allure.junit4.DisplayName;
 import io.restassured.response.Response;
 import org.junit.After;
@@ -15,16 +14,17 @@ import ru.praktikum.diplom3.pageobject.RegistrationPage;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
-public class RegistrationTest extends BaseTest{
+public class RegistrationTest extends BaseTest {
     private MainPage mainPage;
-    Boolean successCreateUser = false;
+    private Boolean successCreateUser = false;
     private RegistrationPage registrationPage;
-    CreateUserRequest createUserRequest;
-    UserApiClient userApiClient;
-    Response responseLoginUser;
+    private CreateUserRequest createUserRequest;
+    private UserApiClient userApiClient;
+    private Response responseLoginUser;
+
     @Before
     @DisplayName("")
-    public void init(){
+    public void init() {
         mainPage = new MainPage(webDriver);
         registrationPage = new RegistrationPage(webDriver);
         createUserRequest = CreateUserRequestGenerator.getRandomUser();
@@ -33,7 +33,7 @@ public class RegistrationTest extends BaseTest{
 
     @Test
     @DisplayName("Проверка успешной регистрации")
-    public void checkSuccessRegistration(){
+    public void checkSuccessRegistration() {
         Boolean isLoginPageVisible = mainPage.clickButtonPersonalAccount()
                 .clickLinkRegistration()
                 .sendKeysInputName(createUserRequest.getName())
@@ -48,7 +48,7 @@ public class RegistrationTest extends BaseTest{
 
     @Test
     @DisplayName("Проверка недоступности регистрации с паролем меньше 6 символов")
-    public void checkIncorrectPassword(){
+    public void checkIncorrectPassword() {
         mainPage.clickButtonPersonalAccount()
                 .clickLinkRegistration()
                 .sendKeysInputName(createUserRequest.getName())
@@ -59,19 +59,22 @@ public class RegistrationTest extends BaseTest{
         assertTrue(registrationPage.isVisibleIncorrectPassword());
         assertFalse(successCreateUser);
     }
+
     @After
     @DisplayName("Удаление созданного пользователя")
-    public void deleteUser(){
-        if (successCreateUser){
+    public void deleteUser() {
+        if (successCreateUser) {
             LoginUserResponse loginUserResponse = responseLoginUser.as(LoginUserResponse.class);
             String token = loginUserResponse.getAccessToken();
             userApiClient.deleteUser(token);
         }
     }
-    @Step
+
     @DisplayName("Метод, возвращающий успешность авторизации пользователя")
-    public Boolean checkCreateUser(){
+    public Boolean checkCreateUser() {
         responseLoginUser = userApiClient.loginUser(LoginUserRequest.fromCreateUserRequest(createUserRequest));
         return responseLoginUser.body().jsonPath().getBoolean("success");
-    };
+    }
+
+    ;
 }

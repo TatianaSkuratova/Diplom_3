@@ -1,4 +1,5 @@
 package ru.praktikum.diplom3.models;
+
 import lombok.Data;
 
 @Data

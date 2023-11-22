@@ -1,23 +1,33 @@
 package ru.praktikum.diplom3.pageobject;
 
+import io.qameta.allure.Step;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-import ru.praktikum.diplom3.WebDriverFactory;
 
 public class PersonalAccountPage {
 
-    WebDriver webDriver;
-    By buttonExit = By.xpath("//button[text()=\"Выход\"]");
+    private WebDriver webDriver;
+    private By buttonExit = By.xpath("//button[text()=\"Выход\"]");
+    private By imageLogo = By.xpath("//a[@class=\"active\"]");
+
     public PersonalAccountPage(WebDriver webDriver) {
         this.webDriver = webDriver;
     }
 
-    public Boolean isVisibleButtonExit(){
+    @Step("Проверка наличия кнопки \"Выход\" в личном кабинете")
+    public Boolean isVisibleButtonExit() {
         return webDriver.findElement(buttonExit).isDisplayed();
     }
-    public LoginPage clickToButtonExit(){
-       webDriver.findElement(buttonExit).click();
-       return new LoginPage(webDriver);
+
+    @Step("Кликнуть на кнопку \"Выход\" в личном кабинете")
+    public LoginPage clickToButtonExit() {
+        webDriver.findElement(buttonExit).click();
+        return new LoginPage(webDriver);
     }
 
+    @Step("Кликнуть логотип на главной странице")
+    public ConstructorPage clickImageLogo() {
+        webDriver.findElement(imageLogo).click();
+        return new ConstructorPage(webDriver);
+    }
 }
